@@ -3,8 +3,15 @@ import { Fragment } from "react";
 import Head from "next/head";
 
 import SingleMeetup from "../../components/meetups/SingleMeetup";
+import { useRouter } from "next/router";
 
 const MeetupPage = (props) => {
+  const { isFallback } = useRouter();
+
+  if (isFallback) {
+    return <h1>loading...</h1>;
+  }
+
   return (
     <Fragment>
       <Head>
@@ -40,7 +47,7 @@ export const getStaticPaths = async () => {
   const collectionsId = await collections.find({}, { _id: 1 }).toArray();
 
   return {
-    fallback: false,
+    fallback: true,
     paths: collectionsId.map((collectionId) => {
       return {
         params: {
